@@ -1,6 +1,7 @@
 node_modules/
-
 bls_to_execution_changes/
 validator_keys/
 teku-keys/
 teku-secrets/
+pectra-devnet-4/
+.env
