@@ -38,8 +38,8 @@ A few prefunded accounts (find more in the output from Kurtosis)
 ## System Smart Contracts
 
 - Deposit Contract Address: 0x4242424242424242424242424242424242424242
-- Withdrawal Contract Address: 0x09Fc772D0857550724b07B850a4323f39112aAaA
-- Consolidation Contract Address: 0x01aBEa29659e5e97C95107F20bb753cD3e09bBBb
+- Withdrawal Contract Address: 0x0c15F14308530b7CDB8460094BbB9cC28b9AaaAA
+- Consolidation Contract Address: 0x00431F263cE400f4455c2dCf564e53007Ca4bbBb
 
 # Helpers
 
