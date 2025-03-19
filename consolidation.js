@@ -29,30 +29,34 @@ await askQuestion(
   `Ready to submit tx to consolidation contract (${consolidationContractAddress})? Press enter to continue...\n`
 );
 
-const nonce = await web3.eth.getTransactionCount(senderAccount);
+var nonce = await web3.eth.getTransactionCount(senderAccount);
 
-const rawTxn = {
-  nonce: nonce,
-  gasPrice: "0x3b9aca00",
-  gasLimit: 1000000,
-  to: consolidationContractAddress,
-  value: 2,
-  data: "0x" + SOURCE_PUB_KEY.substring(2) + TARGET_PUB_KEY.substring(2),
-};
+for (let i = 0; i < 4; i++) {
+  const rawTxn = {
+    nonce: nonce,
+    gasPrice: "0x3b9aca00",
+    gasLimit: 1000000,
+    to: consolidationContractAddress,
+    value: getFee(i),
+    data: "0x" + SOURCE_PUB_KEY.substring(2) + TARGET_PUB_KEY.substring(2),
+  };
 
-const common = Common.custom({
-  chainId: process.env.NETWORK_ID,
-  networkId: process.env.NETWORK_ID,
-});
-const tx = LegacyTransaction.fromTxData(rawTxn, { common });
+  const common = Common.custom({
+    chainId: process.env.NETWORK_ID,
+    networkId: process.env.NETWORK_ID,
+  });
+  const tx = LegacyTransaction.fromTxData(rawTxn, { common });
 
-const signedTx = tx.sign(toBytes(senderPrivateKey));
-console.log("Transaction hash = " + bytesToHex(signedTx.hash()));
+  const signedTx = tx.sign(toBytes(senderPrivateKey));
+  console.log("Transaction hash = " + bytesToHex(signedTx.hash()));
 
-try {
-  await web3.eth.sendSignedTransaction(bytesToHex(signedTx.serialize()));
-} catch (err) {
-  console.error(err);
+  try {
+    await web3.eth.sendSignedTransaction(bytesToHex(signedTx.serialize()));
+  } catch (err) {
+    console.error(err);
+  }
+
+  nonce++;
 }
 
 function askQuestion(query) {
@@ -67,4 +71,13 @@ function askQuestion(query) {
       resolve(ans);
     })
   );
+}
+
+function getFee(i) {
+  if (i <= 12) return 1;
+  if (i <= 19) return 2;
+  if (i <= 24) return 3;
+  if (i <= 27) return 4;
+  if (i <= 29) return 5;
+  return 1000;
 }
